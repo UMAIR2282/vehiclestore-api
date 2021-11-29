@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API\v1;
 
-use App\Enums\Http\StatusCode;
-use App\Helpers\StorageExtended;
 use App\Http\Controllers\Controller;
-use App\Http\Responses\AssociativeArrayResponseDTO;
-use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
-use WebApi\Database\Models\VehicleMake;
-use WebApi\Requests\Lookups\LookupItemsRequest;
-use WebApi\Requests\Lookups\VehicleMakeItemRequest;
-use WebApi\Services\Lookups\BasicSetupsService;
+use Lookups\DataTransferObjects\LookupItemsRequestDTO;
+use Lookups\DataTransferObjects\VehicleMakeDTO;
+use Lookups\Models\VehicleMake;
+use Lookups\Requests\LookupItemsRequest;
+use Lookups\Requests\VehicleMakeItemRequest;
+use WebApi\Services\Lookups\CreateLookupAction;
+use WebApi\Services\Lookups\FetchLookupItemsAction;
+use WebApi\Services\Lookups\UpdateLookupAction;
 
 class VehicleMakeController extends Controller
 {
@@ -27,9 +27,10 @@ class VehicleMakeController extends Controller
      * */
     public function index(LookupItemsRequest $request): JsonResponse
     {
-        $itemsRequestDTO = $request->getItem();
+        $itemsRequestDTO = LookupItemsRequestDTO::fromLookItemsRequest($request);
+        $lookupAction = new FetchLookupItemsAction(new VehicleMake(), $itemsRequestDTO);
 
-        return $this->handleResponse(BasicSetupsService::processGetListRequest(VehicleMake::class, $itemsRequestDTO));
+        return $this->handleResponse($lookupAction->__invoke());
     }
     /**
      * @return JsonResponse
@@ -37,9 +38,10 @@ class VehicleMakeController extends Controller
      * */
     public function store(VehicleMakeItemRequest $request): JsonResponse
     {
-        $vehicleMakeDTO = $request->getItem();
+        $vehicleMakeDTO = VehicleMakeDTO::fromStoreRequest($request);
+        $lookupAction = new CreateLookupAction(new VehicleMake(), $vehicleMakeDTO);
 
-        return $this->handleResponse(BasicSetupsService::processStoreRequest(VehicleMake::class, $vehicleMakeDTO->toJSONResponse()));
+        return $this->handleResponse($lookupAction->__invoke());
     }
 
     /**
@@ -48,8 +50,9 @@ class VehicleMakeController extends Controller
      * */
     public function update(VehicleMakeItemRequest $request, $id): JsonResponse
     {
-        $vehicleMakeDTO = $request->getItem();
+        $vehicleMakeDTO = VehicleMakeDTO::fromStoreRequest($request);
+        $lookupAction = new UpdateLookupAction(new VehicleMake(), $vehicleMakeDTO);
 
-        return $this->handleResponse(BasicSetupsService::processUpdateRequest(VehicleMake::class, $vehicleMakeDTO, ["id" => $id]));
+        return $this->handleResponse($lookupAction->__invoke());
     }
 }

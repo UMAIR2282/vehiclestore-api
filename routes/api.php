@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function () {
+    return 'Welcome to VehicleStore API';
+})->name("welcomeApi");
+
 Route::group(['prefix' => 'v1'], function ()
     {
         Route::group(['prefix' => '/vehicle'], function(){

@@ -25,6 +25,8 @@
         "psr-4": {
             "App\\": "app/",
             "WebApi\\": "Domains/WebApi/",
+            "Lookups\\": "Domains/Lookups/",
+            "Vehicles\\": "Domains/Vehicles/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }
