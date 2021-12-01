@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class StorageExtended
 {
@@ -23,13 +24,13 @@ class StorageExtended
 
     }
 
-    public static function getUrl($path)
+    public static function getUrl(string $path)
     {
         $disk = self::getDisk();
         return $disk->url($path);
     }
 
-    public static function storeImage($image, $path, $name = null)
+    public static function storeImage(UploadedFile $image, string $path, string $name = null)
     {
         $disk = self::getDisk();
         if(!isset($name))

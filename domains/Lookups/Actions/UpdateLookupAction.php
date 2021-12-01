@@ -23,7 +23,7 @@ class UpdateLookupAction
         $this->imagesAction = isset($imagesAction) && $imagesAction != null ? $imagesAction : new ProcessImagesAction($model, $dto);
     }
 
-    public function __invoke($dto = null) : BaseResponseDTO
+    public function __invoke(IJSONResponse $dto = null) : BaseResponseDTO
     {
         if($dto != null)
         {

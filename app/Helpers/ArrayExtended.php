@@ -14,7 +14,7 @@ class ArrayExtended
      * @param int|string $needleValue
      * @return mixed|null
      */
-    public static function first(array $source, string $key, $needleValue)
+    public static function first(array $source, string $key, string $needleValue)
     {
         if (count($source) == 0) {
             return null;
@@ -36,7 +36,7 @@ class ArrayExtended
      * @param $arr
      * @return array|null
      */
-    public static function normalize($arr): ?array
+    public static function normalize(array $arr): ?array
     {
         $out = array_values(array_unique($arr));
         if (empty($out)) {
@@ -101,7 +101,7 @@ class ArrayExtended
      * @param $key
      * @return array
      */
-    public static function batchByProperty(array $list, $key): array
+    public static function batchByProperty(array $list, string $key): array
     {
         $leading = Arr::pluck($list, $key);
         $out = [];
