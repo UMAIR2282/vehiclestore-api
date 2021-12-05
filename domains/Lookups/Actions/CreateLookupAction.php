@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebApi\Services\Lookups;
+namespace Lookups\Actions;
 
 use App\Enums\Http\StatusCode;
 use App\Http\Responses\AssociativeArrayResponseDTO;
@@ -43,6 +43,6 @@ class CreateLookupAction
         {
             ($this->imagesAction)($response, $data["images"]);
         }
-        return new AssociativeArrayResponseDTO(StatusCode::SUCCESS_OK_200, "item", $response);
+        return new AssociativeArrayResponseDTO(StatusCode::SUCCESS_OK_200, "item", $response->toJSONResponse());
     }
 }

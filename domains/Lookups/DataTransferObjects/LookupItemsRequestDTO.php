@@ -15,11 +15,11 @@ class LookupItemsRequestDTO implements IJSONResponse
     public ?int $is_archived;
 
     public function __construct(
-        ?int $length,
-        ?int $page,
-        ?int $offset,
-        ?int $is_active,
-        ?int $is_archived
+        ?int $length = 10,
+        ?int $page = 1,
+        ?int $offset = 0,
+        ?int $is_active = 1,
+        ?int $is_archived = 0
     ) {
         $this->length = isset($length) && !is_null($length) && $length > 0 ? $length : 50;
         $this->page = isset($page) && !is_null($page) && $page > 0 ? $page : 1;

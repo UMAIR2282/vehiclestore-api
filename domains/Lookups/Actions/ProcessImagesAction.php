@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebApi\Services\Lookups;
+namespace Lookups\Actions;
 
 use App\Helpers\StorageExtended;
 use App\Http\Responses\IJSONResponse;
@@ -19,7 +19,7 @@ class ProcessImagesAction
         $this->dto = $dto;
     }
 
-    public function __invoke(array $images = [], IJSONResponse $dto)
+    public function __invoke(IJSONResponse $dto, array $images = [])
     {
         if(isset($dto->id) && is_array($images) && count($images) > 0)
         {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Lookups\Collections;
+namespace Lookups\QueryBuilders;
 
 use Illuminate\Database\Eloquent\Builder;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebApi\Services\Lookups;
+namespace Lookups\Actions;
 
 use App\Enums\Http\StatusCode;
 use App\Http\Responses\AssociativeArrayResponseDTO;
@@ -33,7 +33,7 @@ class UpdateLookupAction
         {
 
             $response = $this->lookup->updateFromDTO($this->dto, ["id" => $this->dto->id]);
-            $response = ["id" => $this->dto["id"], "update" => $response];
+            $response = ["id" => $this->dto->id, "update" => $response];
         }
         else
         {

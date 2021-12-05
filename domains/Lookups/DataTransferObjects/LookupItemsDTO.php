@@ -4,6 +4,7 @@ namespace Lookups\DataTransferObjects;
 
 use App\Helpers\ArrayExtended;
 use App\Http\Responses\IJSONResponse;
+use Illuminate\Database\Eloquent\Collection;
 
 class LookupItemsDTO implements IJSONResponse
 {
@@ -18,7 +19,7 @@ class LookupItemsDTO implements IJSONResponse
         $this->total = $total;
     }
 
-    public static function fromDBModel($items): self
+    public static function fromDBModel(Collection $items): self
     {
         return new self(
             json_decode(json_encode($items), true)

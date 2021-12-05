@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace WebApi\Services\Lookups;
+namespace Lookups\Actions;
 
 use App\Enums\Http\StatusCode;
 use App\Http\Responses\AssociativeArrayResponseDTO;
 use App\Http\Responses\BaseResponseDTO;
+use Lookups\DataTransferObjects\LookupItemsDTO;
 use Lookups\DataTransferObjects\LookupItemsRequestDTO;
 use Lookups\Models\LookupsBaseModel;
 
@@ -22,8 +23,13 @@ class FetchLookupItemsAction
     }
     public function __invoke(LookupItemsRequestDTO $itemsRequestDTO = null) : BaseResponseDTO
     {
-        $response = $this->lookup->activeList($itemsRequestDTO->offset, $itemsRequestDTO->length);
+        if($itemsRequestDTO != null)
+        {
+            $this->dto = $itemsRequestDTO;
+        }
+        $items = $this->lookup->activeList($this->dto->offset, $this->dto->length);
+        $response = LookupItemsDTO::fromDBModel($items);
        
-        return new AssociativeArrayResponseDTO(StatusCode::SUCCESS_OK_200, "items", $response);
+        return new AssociativeArrayResponseDTO(StatusCode::SUCCESS_OK_200, "items", $response->toJSONResponse());
     }
 }

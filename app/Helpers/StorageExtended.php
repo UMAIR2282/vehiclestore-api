@@ -24,8 +24,12 @@ class StorageExtended
 
     }
 
-    public static function getUrl(string $path)
+    public static function getUrl(?string $path)
     {
+        if(StrExtended::isEmpty($path))
+        {
+            return null;
+        }
         $disk = self::getDisk();
         return $disk->url($path);
     }

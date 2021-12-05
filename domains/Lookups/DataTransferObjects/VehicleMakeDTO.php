@@ -8,11 +8,11 @@ use App\Helpers\StorageExtended;
 use App\Helpers\StrExtended;
 use App\Http\Responses\IJSONResponse;
 use Lookups\Requests\VehicleMakeItemRequest;
-use WebApi\Database\Models\VehicleMake;
+use Lookups\Models\VehicleMake;
 
 class VehicleMakeDTO implements IJSONResponse
 {
-    public int $id;
+    public ?int $id;
     public string $name;
     public string $short_code;
     public ?string $short_description;
@@ -81,19 +81,18 @@ class VehicleMakeDTO implements IJSONResponse
      */
     public static function fromStoreRequest(VehicleMakeItemRequest $request): VehicleMakeDTO
     {
-        $id = (int) $request->get('id');
+        $id = $request->filled("id") ? (int) $request->get('id') : null;
         $name = $request->get('name');
         $short_code = $request->get('short_code');
         $short_description = $request->get('short_description');
-        $year_ranges = (array) $request->get('year_ranges');
+        $year_ranges = $request->filled("year_ranges") ? (array) $request->get('year_ranges') : [];
         $primary_logo_path = $request->get('primary_logo_path');
         $primary_image_path = $request->get('primary_image_path');
-        $is_active = (int) $request->get('is_active');
-        $is_archived = (int) $request->get('is_archived');
+        $is_active = $request->filled("is_active") ? (int) $request->get('is_active') : 1;
+        $is_archived = $request->filled("is_archived") ? (int) $request->get('is_archived') : 0;
         $images = [];
         $created_at = $request->get('created_at');
         $updated_at = $request->get('updated_at');
-
         if(isset($request->files) && $request->files != null && count($request->files) > 0)
         {
             foreach($request->files AS $file)
@@ -108,7 +107,7 @@ class VehicleMakeDTO implements IJSONResponse
     public function toJSONResponse(): array
     {
         return ArrayExtended::filterNulls([
-            'id' => $this->id,
+            'id' => isset($this->id) && $this->id > 0 ? $this->id : null,
             'name' => $this->name,
             'short_code' => $this->short_code,
             'short_description' => $this->short_description,
@@ -118,6 +117,23 @@ class VehicleMakeDTO implements IJSONResponse
             'is_active' => $this->is_active,
             'is_archived' => $this->is_archived,
             'images' => $this->images,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at
+        ]);
+    }
+
+    public function toModelData(): array
+    {
+        return ArrayExtended::filterNulls([
+            'id' => isset($this->id) && $this->id > 0 ? $this->id : null,
+            'name' => $this->name,
+            'short_code' => $this->short_code,
+            'short_description' => $this->short_description,
+            'year_ranges' => json_encode($this->year_ranges),
+            'primary_logo_path' => $this->primary_logo_path,
+            'primary_image_path' => $this->primary_image_path,
+            'is_active' => $this->is_active,
+            'is_archived' => $this->is_archived,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ]);
